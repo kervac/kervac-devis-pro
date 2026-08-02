@@ -13,79 +13,80 @@ export default function Home() {
   const [imp, setImp] = useState(0)
   const [qte, setQte] = useState(1)
   const [client, setClient] = useState({
-  nom: '',
-  entreprise: '',
-  email: '',
-  adresse: ''
-})
+    nom: '',
+    entreprise: '',
+    email: '',
+    adresse: ''
+  })
   
   const totalKervac = (scan * TARIFS_KERVAC.scan + cao * TARIFS_KERVAC.cao + imp * TARIFS_KERVAC.impression) * qte
+  
   const genererPDF = () => {
-  const doc = new jsPDF()
-  const date = new Date().toLocaleDateString('fr-FR')
-  const numDevis = `DEV-${Date.now().toString().slice(-6)}`
-  
-  // Logo Kervac - version qui compile
-  doc.addImage('/logo-kervac-pdf.png', 'PNG', 15, 8, 60, 15)
-  
-  // Titre
-  doc.setFontSize(18)
-  doc.setTextColor(230, 81, 0)
-  doc.text("Devis PRO", 105, 35, { align: "center" })
-  
-  // Infos devis
-  doc.setFontSize(11)
-  doc.setTextColor(0, 0, 0)
-  doc.text(`Devis N°: ${numDevis}`, 20, 48)
-  doc.text(`Date: ${date}`, 20, 55)
-  doc.text(`Validité: 30 jours`, 20, 62)
-  
-  // Infos client
-  doc.setFontSize(12)
-  doc.text("Client:", 20, 75)
-  doc.setFontSize(11)
-  doc.text(`${client.nom}`, 20, 83)
-  if (client.societe) doc.text(`${client.societe}`, 20, 90)
-  if (client.email) doc.text(`${client.email}`, 20, client.societe ? 97 : 90)
-  if (client.adresse) doc.text(`${client.adresse}`, 20, client.societe && client.email ? 104 : client.societe || client.email ? 97 : 90)
-  
-  // Prestations
-  let y = 120
-  doc.setFontSize(12)
-  doc.text("Prestations:", 20, y)
-  y += 8
-  doc.setFontSize(11)
-  if (scan > 0) { doc.text(`Scan 3D: ${scan}h x 65€ = ${scan * 65}€`, 25, y); y += 7 }
-  if (cao > 0) { doc.text(`CAO / Modélisation: ${cao}h x 70€ = ${cao * 70}€`, 25, y); y += 7 }
-  if (imp > 0) { doc.text(`Impression / Finition: ${imp}h x 55€ = ${imp * 55}€`, 25, y); y += 7 }
-  
-  doc.text(`Quantité: x${qte}`, 25, y + 7)
-  
-  // Totaux
-  y += 20
-  doc.setFontSize(11)
-  doc.text(`TOTAL HT: ${totalKervac.toFixed(2)}€`, 130, y)
-  doc.text(`TVA 20%: ${(totalKervac * 0.2).toFixed(2)}€`, 130, y + 7)
-  doc.setFontSize(13)
-  doc.setTextColor(230, 81, 0)
-  doc.text(`TOTAL TTC: ${(totalKervac * 1.2).toFixed(2)}€`, 130, y + 15)
-  
-  // Pied de page
-  doc.setFontSize(9)
-  doc.setTextColor(100, 100, 100)
-  doc.text("KERVAC - Services 3D", 105, 270, { align: "center" })
-  doc.text("55 route de la Buche, 33700 Mérignac", 105, 275, { align: "center" })
-  doc.text("brunoedon@orange.fr", 105, 280, { align: "center" })
-  doc.text("SIRET : en cours d'immatriculation", 105, 285, { align: "center" })
-  
-  doc.save(`Devis_Kervac_${numDevis}.pdf`)
-}
+    const doc = new jsPDF()
+    const date = new Date().toLocaleDateString('fr-FR')
+    const numDevis = `DEV-${Date.now().toString().slice(-6)}`
+    
+    // Logo depuis le dossier public
+    doc.addImage('/logo-kervac-pdf.png', 'PNG', 15, 8, 60, 15)
+    
+    doc.setFontSize(18)
+    doc.setTextColor(230, 81, 0)
+    doc.text("Devis PRO", 105, 35, { align: "center" })
+    
+    doc.setFontSize(11)
+    doc.setTextColor(0, 0, 0)
+    doc.text(`Devis N°: ${numDevis}`, 20, 48)
+    doc.text(`Date: ${date}`, 20, 55)
+    doc.text(`Validité: 30 jours`, 20, 62)
+    
+    doc.setFontSize(12)
+    doc.text("Client:", 20, 75)
+    doc.setFontSize(11)
+    doc.text(`${client.nom}`, 20, 83)
+    if (client.entreprise) doc.text(`${client.entreprise}`, 20, 90)
+    if (client.email) doc.text(`${client.email}`, 20, client.entreprise ? 97 : 90)
+    if (client.adresse) doc.text(`${client.adresse}`, 20, client.entreprise && client.email ? 104 : client.entreprise || client.email ? 97 : 90)
+    
+    let y = 120
+    doc.setFontSize(12)
+    doc.text("Prestations:", 20, y)
+    y += 8
+    doc.setFontSize(11)
+    if (scan > 0) { doc.text(`Scan 3D: ${scan}h x 65€ = ${scan * 65}€`, 25, y); y += 7 }
+    if (cao > 0) { doc.text(`CAO / Modélisation: ${cao}h x 70€ = ${cao * 70}€`, 25, y); y += 7 }
+    if (imp > 0) { doc.text(`Impression / Finition: ${imp}h x 55€ = ${imp * 55}€`, 25, y); y += 7 }
+    
+    doc.text(`Quantité: x${qte}`, 25, y + 7)
+    
+    y += 20
+    doc.setFontSize(11)
+    doc.text(`TOTAL HT: ${totalKervac.toFixed(2)}€`, 130, y)
+    doc.text(`TVA 20%: ${(totalKervac * 0.2).toFixed(2)}€`, 130, y + 7)
+    doc.setFontSize(13)
+    doc.setTextColor(230, 81, 0)
+    doc.text(`TOTAL TTC: ${(totalKervac * 1.2).toFixed(2)}€`, 130, y + 15)
+    
+    doc.setFontSize(9)
+    doc.setTextColor(100, 100, 100)
+    doc.text("KERVAC - Services 3D", 105, 270, { align: "center" })
+    doc.text("55 route de la Buche, 33700 Mérignac", 105, 275, { align: "center" })
+    doc.text("brunoedon@orange.fr", 105, 280, { align: "center" })
+    doc.text("SIRET : en cours d'immatriculation", 105, 285, { align: "center" })
+    
+    doc.save(`Devis_Kervac_${numDevis}.pdf`)
+  }
+
   return (
     <main className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Kervac Devis PRO</h1>
-          <p className="text-gray-600">Générateur de devis - Services 3D & ArtTree Forge</p>
+          <div className="flex items-center gap-4 mb-2">
+            <img src="/logo-kervac-header.png" alt="KERVAC" className="h-12" />
+            <div>
+              <h1 className="text-3xl font-bold text-orange-600">KERVAC Devis PRO</h1>
+              <p className="text-gray-600">Générateur de devis - Services 3D & ArtTree Forge</p>
+            </div>
+          </div>
         </div>
 
         <div className="flex gap-2 mb-6">
@@ -101,38 +102,14 @@ export default function Home() {
           <div className="bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-2"><Calculator /> Calculateur Kervac</h2>
             <div className="bg-gray-50 rounded-lg p-4 mb-6 border border-orange-200">
-  <h3 className="font-bold mb-3 text-orange-700">Informations client</h3>
-  <div className="grid md:grid-cols-2 gap-3">
-    <input 
-      type="text" 
-      placeholder="Nom du client" 
-      value={client.nom}
-      onChange={e => setClient({...client, nom: e.target.value})}
-      className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" 
-    />
-    <input 
-      type="text" 
-      placeholder="Entreprise" 
-      value={client.entreprise}
-      onChange={e => setClient({...client, entreprise: e.target.value})}
-      className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" 
-    />
-    <input 
-      type="email" 
-      placeholder="Email" 
-      value={client.email}
-      onChange={e => setClient({...client, email: e.target.value})}
-      className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" 
-    />
-    <input 
-      type="text" 
-      placeholder="Adresse" 
-      value={client.adresse}
-      onChange={e => setClient({...client, adresse: e.target.value})}
-      className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" 
-    />
-  </div>
-</div>
+              <h3 className="font-bold mb-3 text-orange-700">Informations client</h3>
+              <div className="grid md:grid-cols-2 gap-3">
+                <input type="text" placeholder="Nom du client" value={client.nom} onChange={e => setClient({...client, nom: e.target.value})} className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+                <input type="text" placeholder="Entreprise" value={client.entreprise} onChange={e => setClient({...client, entreprise: e.target.value})} className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+                <input type="email" placeholder="Email" value={client.email} onChange={e => setClient({...client, email: e.target.value})} className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+                <input type="text" placeholder="Adresse" value={client.adresse} onChange={e => setClient({...client, adresse: e.target.value})} className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+              </div>
+            </div>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
@@ -162,13 +139,9 @@ export default function Home() {
                   <div className="border-t pt-2 mt-2 flex justify-between font-bold text-xl"><span>TOTAL HT:</span><span>{totalKervac}€</span></div>
                   <div className="flex justify-between text-gray-600"><span>TVA 20%:</span><span>{(totalKervac * 0.2).toFixed(2)}€</span></div>
                   <div className="flex justify-between font-bold text-xl text-orange-600"><span>TOTAL TTC:</span><span>{(totalKervac * 1.2).toFixed(2)}€</span></div>
-                  <button 
-  onClick={genererPDF}
-  disabled={totalKervac === 0 || !client.nom}
-  className="w-full mt-4 bg-orange-600 text-white font-bold py-3 rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-orange-700"
->
-  Télécharger le devis PDF
-</button>
+                  <button onClick={genererPDF} disabled={totalKervac === 0 || !client.nom} className="w-full mt-4 bg-orange-600 text-white font-bold py-3 rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-orange-700">
+                    Télécharger le devis PDF
+                  </button>
                 </div>
               </div>
             </div>
