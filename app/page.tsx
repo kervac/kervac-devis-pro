@@ -23,10 +23,10 @@ export default function Home() {
         </div>
 
         <div className="flex gap-2 mb-6">
-          <button onClick={() => setOnglet('kervac')} className={`px-6 py-3 rounded-lg font-semibold ${onglet === 'kervac' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'}`}>
+          <button onClick={() => setOnglet('kervac')} className={`px-6 py-3 rounded-lg font-semibold ${onglet === 'kervac' ? 'bg-orange-600 text-white' : 'bg-white text-gray-700'}`}>
             KERVAC - Services 3D
           </button>
-          <button onClick={() => setOnglet('arttree')} className={`px-6 py-3 rounded-lg font-semibold ${onglet === 'arttree' ? 'bg-purple-600 text-white' : 'bg-white text-gray-700'}`}>
+          <button onClick={() => setOnglet('arttree')} className={`px-6 py-3 rounded-lg font-semibold ${onglet === 'arttree' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'}`}>
             ArtTree Forge
           </button>
         </div>
