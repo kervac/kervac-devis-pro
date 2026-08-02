@@ -80,7 +80,7 @@ export default function Home() {
                     {key === 'arbre40' && 'Arbre de Vie 40cm'}
                     {key === 'litho' && 'Lithophanie + Socle LED'}
                     {key === 'boite5' && 'Boîte 5 Lithos'}</div>
-                  <div className="text-2xl font-bold text-purple-600">{prix}€</div>
+                  <div className="text-2xl font-bold text-blue-600">{prix}€</div>
                 </div>
               ))}
             </div>
