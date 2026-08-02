@@ -11,6 +11,12 @@ export default function Home() {
   const [cao, setCao] = useState(0) 
   const [imp, setImp] = useState(0)
   const [qte, setQte] = useState(1)
+  const [client, setClient] = useState({
+  nom: '',
+  entreprise: '',
+  email: '',
+  adresse: ''
+})
   
   const totalKervac = (scan * TARIFS_KERVAC.scan + cao * TARIFS_KERVAC.cao + imp * TARIFS_KERVAC.impression) * qte
   
@@ -34,6 +40,39 @@ export default function Home() {
         {onglet === 'kervac' && (
           <div className="bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-2"><Calculator /> Calculateur Kervac</h2>
+            <div className="bg-gray-50 rounded-lg p-4 mb-6 border border-orange-200">
+  <h3 className="font-bold mb-3 text-orange-700">Informations client</h3>
+  <div className="grid md:grid-cols-2 gap-3">
+    <input 
+      type="text" 
+      placeholder="Nom du client" 
+      value={client.nom}
+      onChange={e => setClient({...client, nom: e.target.value})}
+      className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" 
+    />
+    <input 
+      type="text" 
+      placeholder="Entreprise" 
+      value={client.entreprise}
+      onChange={e => setClient({...client, entreprise: e.target.value})}
+      className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" 
+    />
+    <input 
+      type="email" 
+      placeholder="Email" 
+      value={client.email}
+      onChange={e => setClient({...client, email: e.target.value})}
+      className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" 
+    />
+    <input 
+      type="text" 
+      placeholder="Adresse" 
+      value={client.adresse}
+      onChange={e => setClient({...client, adresse: e.target.value})}
+      className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" 
+    />
+  </div>
+</div>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
