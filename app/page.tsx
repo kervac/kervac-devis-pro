@@ -182,13 +182,31 @@ return (
       {/* TON FORMULAIRE EXISTANT - COLLE TOUT ICI */}
       {onglet === 'kervac' && (
         <div className="bg-white p-6 rounded-lg shadow">
-          
-          {/* 👇 COLLE TOUT TON ANCIEN CONTENU ICI 👇 */}
-          {/* Le bloc "Calculateur Kervac", les inputs, le récap, le bouton... */}
-          {/* TOUT ce que tu avais avant dans ton return */}
-          
-        </div>
+       {onglet === 'kervac' && (
+  <div className="bg-white p-6 rounded-lg shadow">
+    
+    <h2 className="text-xl font-bold mb-4">🖩 Calculateur Kervac</h2>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <h3 className="font-semibold text-orange-600 mb-3">Informations client</h3>
+        <input 
+          type="text" 
+          placeholder="Nom" 
+          value={client.nom}
+          onChange={(e) => setClient({...client, nom: e.target.value})}
+          className="w-full p-2 border rounded mb-2"
+        />
+        {/* ... TOUS tes inputs Scan, CAO, Imp, Quantité ... */}
+        {/* ... ton bloc Récapitulatif ... */}
+        {/* ... ton bouton Télécharger le devis PDF ... */}
+      </div>
+    </div>
+    
+  </div>
+)}
       )}
     </div>
   </main>
 )
+}
