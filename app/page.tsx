@@ -179,32 +179,113 @@ return (
         </div>
       )}
 
-      {/* TON FORMULAIRE EXISTANT - COLLE TOUT ICI */}
+      {/* FORMULAIRE KERVAC */}
       {onglet === 'kervac' && (
         <div className="bg-white p-6 rounded-lg shadow">
-       {onglet === 'kervac' && (
-  <div className="bg-white p-6 rounded-lg shadow">
-    
-    <h2 className="text-xl font-bold mb-4">🖩 Calculateur Kervac</h2>
-    
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <h3 className="font-semibold text-orange-600 mb-3">Informations client</h3>
-        <input 
-          type="text" 
-          placeholder="Nom" 
-          value={client.nom}
-          onChange={(e) => setClient({...client, nom: e.target.value})}
-          className="w-full p-2 border rounded mb-2"
-        />
-        {/* ... TOUS tes inputs Scan, CAO, Imp, Quantité ... */}
-        {/* ... ton bloc Récapitulatif ... */}
-        {/* ... ton bouton Télécharger le devis PDF ... */}
-      </div>
-    </div>
-    
-  </div>
-)}
+          <h2 className="text-xl font-bold mb-4">🖩 Calculateur Kervac</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="font-semibold text-orange-600 mb-3">Informations client</h3>
+              <input 
+                type="text" 
+                placeholder="Nom" 
+                value={client.nom}
+                onChange={(e) => setClient({...client, nom: e.target.value})}
+                className="w-full p-2 border rounded mb-2"
+              />
+              <input 
+                type="text" 
+                placeholder="Entreprise" 
+                value={client.entreprise}
+                onChange={(e) => setClient({...client, entreprise: e.target.value})}
+                className="w-full p-2 border rounded mb-2"
+              />
+              <input 
+                type="email" 
+                placeholder="Email" 
+                value={client.email}
+                onChange={(e) => setClient({...client, email: e.target.value})}
+                className="w-full p-2 border rounded mb-2"
+              />
+              <input 
+                type="text" 
+                placeholder="Adresse" 
+                value={client.adresse}
+                onChange={(e) => setClient({...client, adresse: e.target.value})}
+                className="w-full p-2 border rounded mb-4"
+              />
+
+              <h3 className="font-semibold text-orange-600 mb-3">Prestations</h3>
+              <div className="space-y-2">
+                <div>
+                  <label className="text-sm">Scan 3D - {TARIFS_KERVAC.scan}€/h</label>
+                  <input 
+                    type="number" 
+                    value={scan}
+                    onChange={(e) => setScan(Number(e.target.value))}
+                    className="w-full p-2 border rounded"
+                    min="0"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm">CAO / Modélisation - {TARIFS_KERVAC.cao}€/h</label>
+                  <input 
+                    type="number" 
+                    value={cao}
+                    onChange={(e) => setCao(Number(e.target.value))}
+                    className="w-full p-2 border rounded"
+                    min="0"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm">Impression / Finition - {TARIFS_KERVAC.impression}€/h</label>
+                  <input 
+                    type="number" 
+                    value={imp}
+                    onChange={(e) => setImp(Number(e.target.value))}
+                    className="w-full p-2 border rounded"
+                    min="0"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm">Quantité</label>
+                  <input 
+                    type="number" 
+                    value={qte}
+                    onChange={(e) => setQte(Number(e.target.value))}
+                    className="w-full p-2 border rounded"
+                    min="1"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-orange-600 mb-3">Récapitulatif</h3>
+              <div className="bg-gray-50 p-4 rounded space-y-2">
+                {scan > 0 && <p>Scan: {scan}h x 65€ = {scan * 65}€</p>}
+                {cao > 0 && <p>CAO: {cao}h x 70€ = {cao * 70}€</p>}
+                {imp > 0 && <p>Impression: {imp}h x 55€ = {imp * 55}€</p>}
+                <p>Quantité: x{qte}</p>
+                <div className="border-t pt-2 mt-2">
+                  <p className="font-semibold">Total HT: {totalKervac.toFixed(2)}€</p>
+                  <p className="font-semibold">TVA 20%: {(totalKervac * 0.2).toFixed(2)}€</p>
+                  <p className="font-bold text-lg text-orange-600">Total TTC: {(totalKervac * 1.2).toFixed(2)}€</p>
+                </div>
+              </div>
+
+              <button 
+                onClick={genererPDF}
+                disabled={!client.nom || totalKervac === 0}
+                className="w-full mt-4 bg-orange-600 text-white py-3 rounded-lg font-semibold hover:bg-orange-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <FileText size={20} />
+                Télécharger le devis PDF
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   </main>
