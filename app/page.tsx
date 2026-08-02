@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { FileText, Calculator } from 'lucide-react'
+import jsPDF from 'jspdf'
 
 const TARIFS_KERVAC = { scan: 65, cao: 70, impression: 55 }
 const TARIFS_ARTTREE = { arbre20: 89, arbre30: 139, arbre40: 189, litho: 65, boite5: 129 }
@@ -19,6 +20,96 @@ export default function Home() {
 })
   
   const totalKervac = (scan * TARIFS_KERVAC.scan + cao * TARIFS_KERVAC.cao + imp * TARIFS_KERVAC.impression) * qte
+  const genererPDF = () => {
+  const doc = new jsPDF()
+  const date = new Date().toLocaleDateString('fr-FR')
+  const numDevis = `DEV-${Date.now().toString().slice(-6)}`
+  
+  // En-tête Kervac
+  doc.setFontSize(20)
+  doc.setTextColor(234, 88, 12) // Orange
+  doc.text('KERVAC - Devis PRO', 20, 20)
+  
+  // Infos devis
+  doc.setFontSize(10)
+  doc.setTextColor(0, 0, 0)
+  doc.text(`Devis N°: ${numDevis}`, 20, 35)
+  doc.text(`Date: ${date}`, 20, 42)
+  doc.text(`Validité: 30 jours`, 20, 49)
+  
+  // Infos client
+  doc.setFontSize(12)
+  doc.text('Client:', 20, 65)
+  doc.setFontSize(10)
+  doc.text(`${client.nom}`, 20, 72)
+  doc.text(`${client.entreprise}`, 20, 79)
+  doc.text(`${client.email}`, 20, 86)
+  doc.text(`${client.adresse}`, 20, 93)
+  
+  // Détail prestations
+  doc.setFontSize(12)
+  doc.text('Prestations:', 20, 110)
+  doc.setFontSize(10)
+  if(scan > 0) doc.text(`Scan 3D: ${scan}h x ${TARIFS_KERVAC.scan}€ = ${scan * TARIFS_KERVAC.scan}€`, 25, 120)
+  if(cao > 0) doc.text(`CAO: ${cao}h x ${TARIFS_KERVAC.cao}€ = ${cao * TARIFS_KERVAC.cao}€`, 25, 127)
+  if(imp > 0) doc.text(`Impression: ${imp}h x ${TARIFS_KERVAC.impression}€ = ${imp * TARIFS_KERVAC.impression}€`, 25, 134)
+  doc.text(`Quantité: x${qte}`, 25, 141)
+  
+  // Totaux
+  doc.setFontSize(12)
+  doc.text(`TOTAL HT: ${totalKervac}€`, 20, 155)
+  doc.text(`TVA 20%: ${(totalKervac * 0.2).toFixed(2)}€`, 20, 162)
+  doc.setFontSize(14)
+  doc.setTextColor(234, 88, 12)
+  doc.text(`TOTAL TTC: ${(totalKervac * 1.2).toFixed(2)}€`, 20, 172)
+  
+  doc.save(`Devis_Kervac_${numDevis}.pdf`)
+}
+  const genererPDF = () => {
+  const doc = new jsPDF()
+  const date = new Date().toLocaleDateString('fr-FR')
+  const numDevis = `DEV-${Date.now().toString().slice(-6)}`
+  
+  // En-tête Kervac
+  doc.setFontSize(20)
+  doc.setTextColor(234, 88, 12) // Orange
+  doc.text('KERVAC - Devis PRO', 20, 20)
+  
+  // Infos devis
+  doc.setFontSize(10)
+  doc.setTextColor(0, 0, 0)
+  doc.text(`Devis N°: ${numDevis}`, 20, 35)
+  doc.text(`Date: ${date}`, 20, 42)
+  doc.text(`Validité: 30 jours`, 20, 49)
+  
+  // Infos client
+  doc.setFontSize(12)
+  doc.text('Client:', 20, 65)
+  doc.setFontSize(10)
+  doc.text(`${client.nom}`, 20, 72)
+  doc.text(`${client.entreprise}`, 20, 79)
+  doc.text(`${client.email}`, 20, 86)
+  doc.text(`${client.adresse}`, 20, 93)
+  
+  // Détail prestations
+  doc.setFontSize(12)
+  doc.text('Prestations:', 20, 110)
+  doc.setFontSize(10)
+  if(scan > 0) doc.text(`Scan 3D: ${scan}h x ${TARIFS_KERVAC.scan}€ = ${scan * TARIFS_KERVAC.scan}€`, 25, 120)
+  if(cao > 0) doc.text(`CAO: ${cao}h x ${TARIFS_KERVAC.cao}€ = ${cao * TARIFS_KERVAC.cao}€`, 25, 127)
+  if(imp > 0) doc.text(`Impression: ${imp}h x ${TARIFS_KERVAC.impression}€ = ${imp * TARIFS_KERVAC.impression}€`, 25, 134)
+  doc.text(`Quantité: x${qte}`, 25, 141)
+  
+  // Totaux
+  doc.setFontSize(12)
+  doc.text(`TOTAL HT: ${totalKervac}€`, 20, 155)
+  doc.text(`TVA 20%: ${(totalKervac * 0.2).toFixed(2)}€`, 20, 162)
+  doc.setFontSize(14)
+  doc.setTextColor(234, 88, 12)
+  doc.text(`TOTAL TTC: ${(totalKervac * 1.2).toFixed(2)}€`, 20, 172)
+  
+  doc.save(`Devis_Kervac_${numDevis}.pdf`)
+}
   
   return (
     <main className="min-h-screen bg-gray-50 p-4">
@@ -102,6 +193,13 @@ export default function Home() {
                   <div className="border-t pt-2 mt-2 flex justify-between font-bold text-xl"><span>TOTAL HT:</span><span>{totalKervac}€</span></div>
                   <div className="flex justify-between text-gray-600"><span>TVA 20%:</span><span>{(totalKervac * 0.2).toFixed(2)}€</span></div>
                   <div className="flex justify-between font-bold text-xl text-orange-600"><span>TOTAL TTC:</span><span>{(totalKervac * 1.2).toFixed(2)}€</span></div>
+                  <button 
+  onClick={genererPDF}
+  disabled={totalKervac === 0 || !client.nom}
+  className="w-full mt-4 bg-orange-600 text-white font-bold py-3 rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-orange-700"
+>
+  Télécharger le devis PDF
+</button>
                 </div>
               </div>
             </div>
