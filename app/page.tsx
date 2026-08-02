@@ -7,7 +7,6 @@ const TARIFS_KERVAC = { scan: 65, cao: 70, impression: 55 }
 const TARIFS_ARTTREE = { arbre20: 89, arbre30: 139, arbre40: 189, litho: 65, boite5: 129 }
 
 export default function Home() {
-  const [onglet, setOnglet] = useState('kervac')
   const [scan, setScan] = useState(0)
   const [cao, setCao] = useState(0) 
   const [imp, setImp] = useState(0)
@@ -18,9 +17,18 @@ export default function Home() {
     email: '',
     adresse: ''
   })
+
+  const [onglet, setOnglet] = useState('kervac') // 'kervac' ou 'historique'
+  const [historiqueDevis, setHistoriqueDevis] = useState([])
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem('kervac_devis') || '[]')
+    setHistoriqueDevis(data)
+  }, [onglet])
+
   
   const totalKervac = (scan * TARIFS_KERVAC.scan + cao * TARIFS_KERVAC.cao + imp * TARIFS_KERVAC.impression) * qte
-const genererPDF = async () => {
+  const genererPDF = async () => {
   const doc = new jsPDF()
   const date = new Date().toLocaleDateString('fr-FR')
   
@@ -100,6 +108,22 @@ const genererPDF = async () => {
   doc.text("55 route de la Buche, 33700 Mérignac", 105, 275, { align: "center" })
   doc.text("brunoedon@orange.fr", 105, 280, { align: "center" })
   doc.text("SIRET : en cours d'immatriculation", 105, 285, { align: "center" })
+
+// Sauvegarde dans l'historique
+const historique = JSON.parse(localStorage.getItem('kervac_devis') || '[]')
+historique.unshift({
+  num: numDevis,
+  date: date,
+  client: client.nom,
+  entreprise: client.entreprise,
+  totalHT: totalKervac,
+  totalTTC: totalKervac * 1.2,
+  timestamp: Date.now()
+})
+// On garde que les 50 derniers devis
+if (historique.length > 50) historique.pop()
+localStorage.setItem('kervac_devis', JSON.stringify(historique))
+setHistoriqueDevis(historique) 
   
   doc.save(`Devis_Kervac_${numDevis}.pdf`)
 }
