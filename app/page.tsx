@@ -25,64 +25,60 @@ export default function Home() {
   const date = new Date().toLocaleDateString('fr-FR')
   const numDevis = `DEV-${Date.now().toString().slice(-6)}`
   
-  // Logo Kervac
-  const img = new Image()
-  img.src = '/logo-kervac-pdf.png'
-  img.onload = function() {
-    doc.addImage(img, 'PNG', 15, 8, 60, 15) // x, y, largeur, hauteur
-    
-    // Titre
-    doc.setFontSize(18)
-    doc.setTextColor(230, 81, 0) // Orange Kervac
-    doc.text("Devis PRO", 105, 35, { align: "center" })
-    
-    // Infos devis
-    doc.setFontSize(11)
-    doc.setTextColor(0, 0, 0)
-    doc.text(`Devis N°: ${numDevis}`, 20, 48)
-    doc.text(`Date: ${date}`, 20, 55)
-    doc.text(`Validité: 30 jours`, 20, 62)
-    
-    // Infos client
-    doc.setFontSize(12)
-    doc.text("Client:", 20, 75)
-    doc.setFontSize(11)
-    doc.text(`${client.nom}`, 20, 83)
-    if (client.societe) doc.text(`${client.societe}`, 20, 90)
-    if (client.email) doc.text(`${client.email}`, 20, client.societe ? 97 : 90)
-    if (client.adresse) doc.text(`${client.adresse}`, 20, client.societe && client.email ? 104 : client.societe || client.email ? 97 : 90)
-    
-    // Prestations
-    let y = 120
-    doc.setFontSize(12)
-    doc.text("Prestations:", 20, y)
-    y += 8
-    doc.setFontSize(11)
-    if (scan > 0) { doc.text(`Scan 3D: ${scan}h x 65€ = ${scan * 65}€`, 25, y); y += 7 }
-    if (cao > 0) { doc.text(`CAO / Modélisation: ${cao}h x 70€ = ${cao * 70}€`, 25, y); y += 7 }
-    if (imp > 0) { doc.text(`Impression / Finition: ${imp}h x 55€ = ${imp * 55}€`, 25, y); y += 7 }
-    
-    doc.text(`Quantité: x${qte}`, 25, y + 7)
-    
-    // Totaux
-    y += 20
-    doc.setFontSize(11)
-    doc.text(`TOTAL HT: ${totalKervac.toFixed(2)}€`, 130, y)
-    doc.text(`TVA 20%: ${(totalKervac * 0.2).toFixed(2)}€`, 130, y + 7)
-    doc.setFontSize(13)
-    doc.setTextColor(230, 81, 0)
-    doc.text(`TOTAL TTC: ${(totalKervac * 1.2).toFixed(2)}€`, 130, y + 15)
-    
-    // Pied de page
-    doc.setFontSize(9)
-    doc.setTextColor(100, 100, 100)
-    doc.text("KERVAC - Services 3D", 105, 270, { align: "center" })
-    doc.text("55 route de la Buche, 33700 Mérignac", 105, 275, { align: "center" })
-    doc.text("brunoedon@orange.fr", 105, 280, { align: "center" })
-    doc.text("SIRET : en cours d'immatriculation", 105, 285, { align: "center" })
-    
-    doc.save(`Devis_Kervac_${numDevis}.pdf`)
-  }
+  // Logo Kervac - version qui compile
+  doc.addImage('/logo-kervac-pdf.png', 'PNG', 15, 8, 60, 15)
+  
+  // Titre
+  doc.setFontSize(18)
+  doc.setTextColor(230, 81, 0)
+  doc.text("Devis PRO", 105, 35, { align: "center" })
+  
+  // Infos devis
+  doc.setFontSize(11)
+  doc.setTextColor(0, 0, 0)
+  doc.text(`Devis N°: ${numDevis}`, 20, 48)
+  doc.text(`Date: ${date}`, 20, 55)
+  doc.text(`Validité: 30 jours`, 20, 62)
+  
+  // Infos client
+  doc.setFontSize(12)
+  doc.text("Client:", 20, 75)
+  doc.setFontSize(11)
+  doc.text(`${client.nom}`, 20, 83)
+  if (client.societe) doc.text(`${client.societe}`, 20, 90)
+  if (client.email) doc.text(`${client.email}`, 20, client.societe ? 97 : 90)
+  if (client.adresse) doc.text(`${client.adresse}`, 20, client.societe && client.email ? 104 : client.societe || client.email ? 97 : 90)
+  
+  // Prestations
+  let y = 120
+  doc.setFontSize(12)
+  doc.text("Prestations:", 20, y)
+  y += 8
+  doc.setFontSize(11)
+  if (scan > 0) { doc.text(`Scan 3D: ${scan}h x 65€ = ${scan * 65}€`, 25, y); y += 7 }
+  if (cao > 0) { doc.text(`CAO / Modélisation: ${cao}h x 70€ = ${cao * 70}€`, 25, y); y += 7 }
+  if (imp > 0) { doc.text(`Impression / Finition: ${imp}h x 55€ = ${imp * 55}€`, 25, y); y += 7 }
+  
+  doc.text(`Quantité: x${qte}`, 25, y + 7)
+  
+  // Totaux
+  y += 20
+  doc.setFontSize(11)
+  doc.text(`TOTAL HT: ${totalKervac.toFixed(2)}€`, 130, y)
+  doc.text(`TVA 20%: ${(totalKervac * 0.2).toFixed(2)}€`, 130, y + 7)
+  doc.setFontSize(13)
+  doc.setTextColor(230, 81, 0)
+  doc.text(`TOTAL TTC: ${(totalKervac * 1.2).toFixed(2)}€`, 130, y + 15)
+  
+  // Pied de page
+  doc.setFontSize(9)
+  doc.setTextColor(100, 100, 100)
+  doc.text("KERVAC - Services 3D", 105, 270, { align: "center" })
+  doc.text("55 route de la Buche, 33700 Mérignac", 105, 275, { align: "center" })
+  doc.text("brunoedon@orange.fr", 105, 280, { align: "center" })
+  doc.text("SIRET : en cours d'immatriculation", 105, 285, { align: "center" })
+  
+  doc.save(`Devis_Kervac_${numDevis}.pdf`)
 }
   return (
     <main className="min-h-screen bg-gray-50 p-4">
