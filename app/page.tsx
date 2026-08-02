@@ -31,7 +31,7 @@ export default function Home() {
     
     doc.setFontSize(18)
     doc.setTextColor(230, 81, 0)
-    doc.text("Devis PRO", 105, 35, { align: "center" })
+    doc.addImage('/logo-kervac-bandeau.png', 'PNG', 15, 8, 60, 30)
     
     doc.setFontSize(11)
     doc.setTextColor(0, 0, 0)
