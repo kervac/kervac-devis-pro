@@ -20,10 +20,15 @@ export default function Home() {
   })
   
   const totalKervac = (scan * TARIFS_KERVAC.scan + cao * TARIFS_KERVAC.cao + imp * TARIFS_KERVAC.impression) * qte
-  const genererPDF = async () => {
+const genererPDF = async () => {
   const doc = new jsPDF()
   const date = new Date().toLocaleDateString('fr-FR')
-  const numDevis = `DEV-${Date.now().toString().slice(-6)}`
+  
+  // Numérotation auto basée sur la date + compteur localStorage
+  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+  let compteur = parseInt(localStorage.getItem(`devis_${today}`) || '0') + 1
+  localStorage.setItem(`devis_${today}`, compteur.toString())
+  const numDevis = `DEV-${today}-${String(compteur).padStart(3, '0')}`
   
   // On charge l'image d'abord
   const img = new Image()
@@ -32,7 +37,7 @@ export default function Home() {
     img.onload = resolve
   })
   
-  // Logo Kervac bandeau ratio 2:1 - 1774x887px
+  // Logo Kervac bandeau ratio 2:1
   doc.addImage(img, 'PNG', 15, 8, 60, 30)
   
   // Titre
@@ -76,6 +81,17 @@ export default function Home() {
   doc.setFontSize(13)
   doc.setTextColor(230, 81, 0)
   doc.text(`TOTAL TTC: ${(totalKervac * 1.2).toFixed(2)}€`, 130, y + 15)
+  
+  // Conditions de paiement
+  y += 30
+  doc.setFontSize(10)
+  doc.setTextColor(0, 0, 0)
+  doc.text("Conditions de règlement:", 20, y)
+  doc.setFontSize(9)
+  doc.text("- Acompte de 30% à la commande", 25, y + 6)
+  doc.text("- Solde à la livraison", 25, y + 12)
+  doc.text("- Paiement par virement bancaire", 25, y + 18)
+  doc.text("- Délai de livraison: à définir selon projet", 25, y + 24)
   
   // Pied de page
   doc.setFontSize(9)
