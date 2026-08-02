@@ -53,7 +53,7 @@ export default function Home() {
                   <input type="number" value={qte} onChange={e => setQte(+e.target.value)} className="w-full border rounded px-3 py-2" min="1" />
                 </div>
               </div>
-              <div className="bg-blue-50 rounded-lg p-6">
+              <div className="bg-orange-50 rounded-lg p-6">
                 <h3 className="font-bold text-lg mb-4">Récapitulatif</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between"><span>Scan:</span><span>{scan * TARIFS_KERVAC.scan}€</span></div>
@@ -62,7 +62,7 @@ export default function Home() {
                   <div className="flex justify-between"><span>Quantité:</span><span>x{qte}</span></div>
                   <div className="border-t pt-2 mt-2 flex justify-between font-bold text-xl"><span>TOTAL HT:</span><span>{totalKervac}€</span></div>
                   <div className="flex justify-between text-gray-600"><span>TVA 20%:</span><span>{(totalKervac * 0.2).toFixed(2)}€</span></div>
-                  <div className="flex justify-between font-bold text-xl text-blue-600"><span>TOTAL TTC:</span><span>{(totalKervac * 1.2).toFixed(2)}€</span></div>
+                  <div className="flex justify-between font-bold text-xl text-orange-600"><span>TOTAL TTC:</span><span>{(totalKervac * 1.2).toFixed(2)}€</span></div>
                 </div>
               </div>
             </div>
