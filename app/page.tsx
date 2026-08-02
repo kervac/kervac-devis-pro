@@ -64,53 +64,7 @@ export default function Home() {
   doc.text(`TOTAL TTC: ${(totalKervac * 1.2).toFixed(2)}€`, 20, 172)
   
   doc.save(`Devis_Kervac_${numDevis}.pdf`)
-}
-  const genererPDF = () => {
-  const doc = new jsPDF()
-  const date = new Date().toLocaleDateString('fr-FR')
-  const numDevis = `DEV-${Date.now().toString().slice(-6)}`
-  
-  // En-tête Kervac
-  doc.setFontSize(20)
-  doc.setTextColor(234, 88, 12) // Orange
-  doc.text('KERVAC - Devis PRO', 20, 20)
-  
-  // Infos devis
-  doc.setFontSize(10)
-  doc.setTextColor(0, 0, 0)
-  doc.text(`Devis N°: ${numDevis}`, 20, 35)
-  doc.text(`Date: ${date}`, 20, 42)
-  doc.text(`Validité: 30 jours`, 20, 49)
-  
-  // Infos client
-  doc.setFontSize(12)
-  doc.text('Client:', 20, 65)
-  doc.setFontSize(10)
-  doc.text(`${client.nom}`, 20, 72)
-  doc.text(`${client.entreprise}`, 20, 79)
-  doc.text(`${client.email}`, 20, 86)
-  doc.text(`${client.adresse}`, 20, 93)
-  
-  // Détail prestations
-  doc.setFontSize(12)
-  doc.text('Prestations:', 20, 110)
-  doc.setFontSize(10)
-  if(scan > 0) doc.text(`Scan 3D: ${scan}h x ${TARIFS_KERVAC.scan}€ = ${scan * TARIFS_KERVAC.scan}€`, 25, 120)
-  if(cao > 0) doc.text(`CAO: ${cao}h x ${TARIFS_KERVAC.cao}€ = ${cao * TARIFS_KERVAC.cao}€`, 25, 127)
-  if(imp > 0) doc.text(`Impression: ${imp}h x ${TARIFS_KERVAC.impression}€ = ${imp * TARIFS_KERVAC.impression}€`, 25, 134)
-  doc.text(`Quantité: x${qte}`, 25, 141)
-  
-  // Totaux
-  doc.setFontSize(12)
-  doc.text(`TOTAL HT: ${totalKervac}€`, 20, 155)
-  doc.text(`TVA 20%: ${(totalKervac * 0.2).toFixed(2)}€`, 20, 162)
-  doc.setFontSize(14)
-  doc.setTextColor(234, 88, 12)
-  doc.text(`TOTAL TTC: ${(totalKervac * 1.2).toFixed(2)}€`, 20, 172)
-  
-  doc.save(`Devis_Kervac_${numDevis}.pdf`)
-}
-  
+} 
   return (
     <main className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-4xl mx-auto">
