@@ -143,8 +143,6 @@ const telechargerDevisExistant = (devis) => {
 
 return (
   <main className="min-h-screen bg-gray-50 p-4">  
-return (
-  <main className="min-h-screen bg-gray-50 p-4">
     <div className="max-w-4xl mx-auto">
       {/* Header */}
       <div className="bg-white p-6 rounded-lg shadow mb-6">
