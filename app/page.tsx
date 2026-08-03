@@ -116,6 +116,12 @@ historique.unshift({
   date: date,
   client: client.nom,
   entreprise: client.entreprise,
+  email: client.email,
+  adresse: client.adresse,
+  scan: scan,
+  cao: cao,
+  imp: imp,
+  qte: qte,
   totalHT: totalKervac,
   totalTTC: totalKervac * 1.2,
   timestamp: Date.now()
@@ -134,9 +140,79 @@ const supprimerDevis = (numDevis) => {
   setHistoriqueDevis(nouveauHistorique)
 }
 
-const telechargerDevisExistant = (devis) => {
-  alert(`Fonction à venir : Re-générer le PDF pour ${devis.num}\nPour l'instant on ne stocke que le récap, pas le détail des heures.`)
-  setOnglet('kervac')
+const telechargerDevisExistant = async (devis) => {
+  const doc = new jsPDF()
+  
+  // Logo
+  const img = new Image()
+  img.src = '/logo-kervac-bandeau.png'
+  await new Promise((resolve) => {
+    img.onload = resolve
+  })
+  doc.addImage(img, 'PNG', 15, 8, 60, 30)
+  
+  // Titre
+  doc.setFontSize(18)
+  doc.setTextColor(230, 81, 0)
+  doc.text("Devis PRO", 105, 45, { align: "center" })
+  
+  // Infos devis
+  doc.setFontSize(11)
+  doc.setTextColor(0, 0, 0)
+  doc.text(`Devis N°: ${devis.num}`, 20, 58)
+  doc.text(`Date: ${devis.date}`, 20, 65)
+  doc.text(`Validité: 30 jours`, 20, 72)
+  
+  // Infos client
+  doc.setFontSize(12)
+  doc.text("Client:", 20, 85)
+  doc.setFontSize(11)
+  doc.text(`${devis.client}`, 20, 93)
+  if (devis.entreprise) doc.text(`${devis.entreprise}`, 20, 100)
+  if (devis.email) doc.text(`${devis.email}`, 20, devis.entreprise ? 107 : 100)
+  if (devis.adresse) doc.text(`${devis.adresse}`, 20, devis.entreprise && devis.email ? 114 : devis.entreprise || devis.email ? 107 : 100)
+  
+  // Prestations
+  let y = 130
+  doc.setFontSize(12)
+  doc.text("Prestations:", 20, y)
+  y += 8
+  doc.setFontSize(11)
+  if (devis.scan > 0) { doc.text(`Scan 3D: ${devis.scan}h x 65€ = ${devis.scan * 65}€`, 25, y); y += 7 }
+  if (devis.cao > 0) { doc.text(`CAO / Modélisation: ${devis.cao}h x 70€ = ${devis.cao * 70}€`, 25, y); y += 7 }
+  if (devis.imp > 0) { doc.text(`Impression / Finition: ${devis.imp}h x 55€ = ${devis.imp * 55}€`, 25, y); y += 7 }
+  
+  doc.text(`Quantité: x${devis.qte}`, 25, y + 7)
+  
+  // Totaux
+  y += 20
+  doc.setFontSize(11)
+  doc.text(`TOTAL HT: ${devis.totalHT.toFixed(2)}€`, 130, y)
+  doc.text(`TVA 20%: ${(devis.totalHT * 0.2).toFixed(2)}€`, 130, y + 7)
+  doc.setFontSize(13)
+  doc.setTextColor(230, 81, 0)
+  doc.text(`TOTAL TTC: ${devis.totalTTC.toFixed(2)}€`, 130, y + 15)
+  
+  // Conditions de paiement
+  y += 30
+  doc.setFontSize(10)
+  doc.setTextColor(0, 0, 0)
+  doc.text("Conditions de règlement:", 20, y)
+  doc.setFontSize(9)
+  doc.text("- Acompte de 30% à la commande", 25, y + 6)
+  doc.text("- Solde à la livraison", 25, y + 12)
+  doc.text("- Paiement par virement bancaire", 25, y + 18)
+  doc.text("- Délai de livraison: à définir selon projet", 25, y + 24)
+  
+  // Pied de page
+  doc.setFontSize(9)
+  doc.setTextColor(100, 100, 100)
+  doc.text("KERVAC - Services 3D", 105, 270, { align: "center" })
+  doc.text("55 route de la Buche, 33700 Mérignac", 105, 275, { align: "center" })
+  doc.text("brunoedon@orange.fr", 105, 280, { align: "center" })
+  doc.text("SIRET : en cours d'immatriculation", 105, 285, { align: "center" })
+  
+  doc.save(`Devis_Kervac_${devis.num}.pdf`)
 }
 
 return (
