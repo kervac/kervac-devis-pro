@@ -127,6 +127,22 @@ setHistoriqueDevis(historique)
   
   doc.save(`Devis_Kervac_${numDevis}.pdf`)
 }
+  doc.save(`Devis_Kervac_${numDevis}.pdf`)
+}
+
+const supprimerDevis = (numDevis) => {
+  const nouveauHistorique = historiqueDevis.filter(d => d.num !== numDevis)
+  localStorage.setItem('kervac_devis', JSON.stringify(nouveauHistorique))
+  setHistoriqueDevis(nouveauHistorique)
+}
+
+const telechargerDevisExistant = (devis) => {
+  alert(`Fonction à venir : Re-générer le PDF pour ${devis.num}\nPour l'instant on ne stocke que le récap, pas le détail des heures.`)
+  setOnglet('kervac')
+}
+
+return (
+  <main className="min-h-screen bg-gray-50 p-4">  
 return (
   <main className="min-h-screen bg-gray-50 p-4">
     <div className="max-w-4xl mx-auto">
@@ -155,29 +171,45 @@ return (
         </button>
       </div>
 
-      {/* PAGE HISTORIQUE */}
-      {onglet === 'historique' && (
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-bold mb-4">🗂️ Historique des devis</h2>
-          {historiqueDevis.length === 0 ? (
-            <p className="text-gray-500 py-8 text-center">Aucun devis généré pour le moment</p>
-          ) : (
-            <div className="space-y-2">
-              {historiqueDevis.map((devis) => (
-                <div key={devis.num} className="flex justify-between items-center p-4 border rounded-lg hover:bg-orange-50">
-                  <div>
-                    <p className="font-bold text-orange-600">{devis.num}</p>
-                    <p className="text-sm text-gray-600">
-                      {devis.date} - {devis.client} {devis.entreprise && `(${devis.entreprise})`}
-                    </p>
-                  </div>
-                  <p className="font-bold text-lg">{devis.totalTTC.toFixed(2)}€ TTC</p>
-                </div>
-              ))}
+     {/* PAGE HISTORIQUE */}
+{onglet === 'historique' && (
+  <div className="bg-white p-6 rounded-lg shadow">
+    <h2 className="text-xl font-bold mb-4">🗂️ Historique des devis</h2>
+    {historiqueDevis.length === 0 ? (
+      <p className="text-gray-500 py-8 text-center">Aucun devis généré pour le moment</p>
+    ) : (
+      <div className="space-y-2">
+        {historiqueDevis.map((devis) => (
+          <div key={devis.num} className="flex justify-between items-center p-4 border rounded-lg hover:bg-orange-50">
+            <div className="flex-1">
+              <p className="font-bold text-orange-600">{devis.num}</p>
+              <p className="text-sm text-gray-600">
+                {devis.date} - {devis.client} {devis.entreprise && `(${devis.entreprise})`}
+              </p>
             </div>
-          )}
-        </div>
-      )}
+            <div className="flex items-center gap-3">
+              <p className="font-bold text-lg mr-4">{devis.totalTTC.toFixed(2)}€ TTC</p>
+              <button 
+                onClick={() => telechargerDevisExistant(devis)}
+                className="px-3 py-2 bg-orange-600 text-white text-sm rounded hover:bg-orange-700"
+                title="Re-télécharger le PDF"
+              >
+                📄 PDF
+              </button>
+              <button 
+                onClick={() => supprimerDevis(devis.num)}
+                className="px-3 py-2 bg-red-100 text-red-600 text-sm rounded hover:bg-red-200"
+                title="Supprimer"
+              >
+                🗑️
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+)}
 
       {/* FORMULAIRE KERVAC */}
       {onglet === 'kervac' && (
