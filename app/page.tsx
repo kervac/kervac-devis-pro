@@ -126,9 +126,7 @@ localStorage.setItem('kervac_devis', JSON.stringify(historique))
 setHistoriqueDevis(historique) 
   
   doc.save(`Devis_Kervac_${numDevis}.pdf`)
-}
-  doc.save(`Devis_Kervac_${numDevis}.pdf`)
-}
+} // ← ça ferme genererPDF
 
 const supprimerDevis = (numDevis) => {
   const nouveauHistorique = historiqueDevis.filter(d => d.num !== numDevis)
@@ -142,8 +140,9 @@ const telechargerDevisExistant = (devis) => {
 }
 
 return (
-  <main className="min-h-screen bg-gray-50 p-4">  
+  <main className="min-h-screen bg-gray-50 p-4">
     <div className="max-w-4xl mx-auto">
+      {/* Header */}
       {/* Header */}
       <div className="bg-white p-6 rounded-lg shadow mb-6">
         <div className="flex items-center gap-3">
